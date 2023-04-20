@@ -142,8 +142,10 @@ for filename in all_files:
                      ods.append(od)
 pbar.close()
 
-trajs = pd.concat(traj_split, axis=1).T
+trajs = pd.concat(traj_split, axis=1).T.drop_duplicates()
 ods = pd.concat(ods)
+ods['hour_origin'] = pd.to_datetime(ods['index_origin']).dt.hour
+ods = ods.drop_duplicates()
 
 trajs.to_csv('trajectories_{}.csv'.format(date))
 ods.to_csv('O-D_matrix_{}.csv'.format(date))
